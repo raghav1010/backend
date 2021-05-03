@@ -151,3 +151,4 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTH_USER_MODEL = 'sample.User'
 
 django_heroku.settings(locals())
+ALLOWED_HOSTS=['*']
