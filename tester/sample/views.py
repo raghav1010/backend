@@ -31,7 +31,7 @@ class LoginAPIView(viewsets.ViewSet):
         serializer = self.serializer_class(data={'name':name,'password':random_password,'phone':phone})
         if serializer.is_valid():
             serializer.save()
-            return Response(serializer.data,status=status.HTTP_201_created)
+            return Response(serializer.data,status=status.HTTP_201_CREATED)
 
         return Response(status=status.HTTP_400_BAD_REQUEST) 
     
