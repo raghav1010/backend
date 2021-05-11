@@ -21,6 +21,7 @@ class BusinessViewSet(mixins.ListModelMixin,
                    mixins.RetrieveModelMixin,
                    mixins.CreateModelMixin,
                    mixins.UpdateModelMixin,
+                   mixins.DestroyModelMixin,
                    viewsets.GenericViewSet,
                    APIView):
 
@@ -31,9 +32,6 @@ class BusinessViewSet(mixins.ListModelMixin,
     serializer_class = BusinessSerializer
 
     def perform_create(self,serializer):
-        
-        
-        print("p1")
         auth_token = self.request.user 
         try:
             decoded_token = jwt.decode(auth_token,options={"verify_signature":False})
@@ -47,8 +45,6 @@ class BusinessViewSet(mixins.ListModelMixin,
         return serializer.save(owner=u[0])
 
     def get_queryset(self):
-        
-        print("p2")
         auth_token= self.request.user 
         try:
             decoded_token = jwt.decode(auth_token,options={"verify_signature":False})
@@ -61,6 +57,9 @@ class BusinessViewSet(mixins.ListModelMixin,
         uuid = u[0].id
         return self.queryset.filter(owner=u[0])
     
+    
+
+
 
 
     @action(methods=['post', "get"], detail=True, url_name="add_employee")
@@ -116,6 +115,27 @@ class EmployeeView(viewsets.ViewSet):
         emp = queryset.filter(id=pk)
         serializer = EmployeeSerializer(emp[0])
         return Response(serializer.data)
+     
+    def partial_update(self,request, pk=None):
+        auth_token = self.request.user 
+        try:
+            decoded_token = jwt.decode(auth_token,options={"verify_signature":False})
+        except (jwt.DecodeError,jwt.InvalidAlgorithmError):
+            raise AuthenticationFailed('Bad Token')
+        
+        phone = decoded_token['phone_number']
+        u = User.objects.filter(phone=phone)
+
+        queryset = Employee.objects.all()
+        emp = queryset.filter(id = pk)
+        serializer = EmployeeSerializer(emp[0],data = self.request.data,partial=True)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(serializer.data)
+
+    
+
+
 
 
     @action(methods=['post', "get"], detail=True, url_name="add_attendance")

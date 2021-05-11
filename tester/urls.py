@@ -31,7 +31,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
 
     # api endpoint
-    path('User', include("tester.sample.urls")),
+    path('', include("tester.sample.urls")),
     path('', include("tester.business.urls")),
     # path('api/v1/', include("onemm.leaves.urls"), name="leaves"),
 

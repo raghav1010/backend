@@ -7,10 +7,16 @@ from rest_framework_simplejwt.views import (
 
 from .views import *
 
+from rest_framework.routers import DefaultRouter
 
+from .views import *
 
-urlpatterns =[
+# router = DefaultRouter()
+# router.register(r'User', LoginAPIView, basename="User")
 
-    # api endpoint
-    path('', LoginAPIView.as_view(), name="users"),
-]
+urlpatterns = [
+path('user', LoginAPIView.as_view({
+    'get': 'list',
+    'post': 'create',
+    'put':'update'
+}))]

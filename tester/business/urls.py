@@ -12,7 +12,7 @@ from rest_framework.routers import DefaultRouter
 from .views import *
 
 router = DefaultRouter()
-router.register(r'Business', BusinessViewSet, basename="Business")
-router.register(r'Employee',EmployeeView,basename="Employee")
+router.register(r'business', BusinessViewSet, basename="business")
+router.register(r'employee',EmployeeView,basename="employee")
 
 urlpatterns = router.urls 
